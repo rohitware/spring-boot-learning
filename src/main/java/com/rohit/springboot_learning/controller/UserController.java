@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/users")
@@ -27,4 +28,10 @@ public class UserController {
     public String getUserById(@PathVariable int id) {
         return "User ID" + id;
     }
+
+    @GetMapping("/search")
+    public String searchUser(@RequestParam String name) {
+        return "Searching user: " + name;
+    }
+
 }
