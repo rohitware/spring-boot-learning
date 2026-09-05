@@ -25,7 +25,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String getUserById(@PathVariable int id) {
-        return "User ID" + id;
+        return userService.getUserById(id);
     }
 
     @GetMapping("/search")
@@ -36,8 +36,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody User user) {
 
-        String response = "User created: " + user.getName()
-                + ", Age: " + user.getAge();
+        String response = userService.createUser(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -47,16 +46,15 @@ public class UserController {
             @PathVariable int id,
             @RequestBody User user) {
 
-        String response = "User " + id + " updated: "
-                + user.getName() + ", Age: " + user.getAge();
+        String response = userService.updateUser(id, user);
 
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id) {
-
-        return ResponseEntity.ok("User " + id + " deleted successfully");
+        String response = userService.deleteUser(id);
+        return ResponseEntity.ok(response);
     }
 
 }
