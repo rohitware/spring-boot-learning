@@ -52,4 +52,11 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable int id) {
+
+        return ResponseEntity.ok("User " + id + " deleted successfully");
+    }
+
 }
