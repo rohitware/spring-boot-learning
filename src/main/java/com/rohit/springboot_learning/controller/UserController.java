@@ -1,11 +1,20 @@
 package com.rohit.springboot_learning.controller;
 
-import com.rohit.springboot_learning.service.UserService;
-import com.rohit.springboot_learning.model.User;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.rohit.springboot_learning.model.User;
+import com.rohit.springboot_learning.service.UserService;
 
 @RestController
 @RequestMapping("/users")
@@ -17,20 +26,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
-    public String displayUser() {
-        userService.getUser();
-        return "User fetched successfully";
-    }
-
     @GetMapping("/{id}")
-    public String getUserById(@PathVariable int id) {
-        return userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+
+        User user = userService.getUserById(id);
+
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/search")
-    public String searchUser(@RequestParam String name) {
-        return "Searching user: " + name;
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @PostMapping
@@ -44,19 +54,28 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(
-            @PathVariable int id,
+    public ResponseEntity<User> updateUser(
+            @PathVariable Long id,
             @RequestBody User user) {
 
-        String response = userService.updateUser(id, user);
+        User updatedUser = userService.updateUser(id, user);
 
-        return ResponseEntity.ok(response);
+        if (updatedUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable int id) {
-        String response = userService.deleteUser(id);
-        return ResponseEntity.ok(response);
-    }
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
 
+        boolean deleted = userService.deleteUser(id);
+
+        if (!deleted) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok("User " + id + " deleted successfully");
+    }
 }

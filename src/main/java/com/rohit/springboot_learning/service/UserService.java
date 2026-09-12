@@ -1,5 +1,7 @@
 package com.rohit.springboot_learning.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.rohit.springboot_learning.model.User;
@@ -7,6 +9,7 @@ import com.rohit.springboot_learning.repository.UserRepository;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -17,19 +20,35 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public String getUser() {
-        return "Getting user...";
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
     }
 
-    public String getUserById(int id) {
-        return "User ID: " + id;
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    public String updateUser(int id, User user) {
-        return "User " + id + " updated: " + user.getName() + ", Age: " + user.getAge();
+    public User updateUser(Long id, User user) {
+
+        User existingUser = userRepository.findById(id).orElse(null);
+
+        if (existingUser == null) {
+            return null;
+        }
+
+        existingUser.setName(user.getName());
+        existingUser.setAge(user.getAge());
+
+        return userRepository.save(existingUser);
     }
 
-    public String deleteUser(int id) {
-        return "User " + id + " deleted successfully";
+    public boolean deleteUser(Long id) {
+
+        if (!userRepository.existsById(id)) {
+            return false;
+        }
+
+        userRepository.deleteById(id);
+        return true;
     }
 }
