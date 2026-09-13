@@ -1,5 +1,6 @@
 package com.rohit.springboot_learning.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +24,13 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public String getProductById(@PathVariable Long id) {
-        return "Product with ID: " + id;
+    public ResponseEntity<String> getProductById(@PathVariable Long id) {
+
+        if (id == 1L) {
+            return ResponseEntity.ok("Product found with id: " + id);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
