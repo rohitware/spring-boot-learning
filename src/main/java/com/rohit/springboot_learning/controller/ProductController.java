@@ -52,10 +52,6 @@ public class ProductController {
 
     }
 
-    public void Product() {
-
-    }
-
     // GET /products/search?name=
     @GetMapping("/search")
     public String searchProduct(@RequestParam(required = false, defaultValue = "all") String name) {
