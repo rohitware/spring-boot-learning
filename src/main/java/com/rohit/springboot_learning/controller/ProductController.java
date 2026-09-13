@@ -8,6 +8,7 @@ import java.util.List;
 import com.rohit.springboot_learning.model.Product;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/products")
@@ -33,6 +34,11 @@ public class ProductController {
 
     public void Product() {
 
+    }
+
+    @GetMapping("/search")
+    public String searchProduct(@RequestParam(required = false, defaultValue = "all") String name) {
+        return "Searching for product " + name;
     }
 
 }
