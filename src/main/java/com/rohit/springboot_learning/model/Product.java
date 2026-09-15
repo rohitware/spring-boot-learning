@@ -44,7 +44,7 @@ public class Product {
         this.name = name;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

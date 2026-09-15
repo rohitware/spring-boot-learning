@@ -13,7 +13,6 @@ import com.rohit.springboot_learning.service.ProductService;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
@@ -52,12 +51,6 @@ public class ProductController {
                 .status(HttpStatus.CREATED)
                 .body(saveProduct);
 
-    }
-
-    // GET /products/search?name=
-    @GetMapping("/search")
-    public String searchProduct(@RequestParam(required = false, defaultValue = "all") String name) {
-        return "Searching for product " + name;
     }
 
     @PutMapping("/{id}")
