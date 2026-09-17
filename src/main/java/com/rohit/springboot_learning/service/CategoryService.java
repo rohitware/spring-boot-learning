@@ -26,4 +26,21 @@ public class CategoryService {
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();
     }
+
+    public Category updateCategory(Long id, Category category) {
+        // find existing Category from database
+
+        Category existingCategory = categoryRepository.findById(id).orElse(null);
+
+        // if not found return null
+        if (existingCategory == null) {
+            return null;
+        }
+        // update fields
+        existingCategory.setName(category.getName());
+        existingCategory.setDescription(category.getDescription());
+
+        // save updated Category back to database
+        return categoryRepository.save(existingCategory);
+    }
 }
