@@ -1,5 +1,7 @@
 package com.rohit.springboot_learning.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.rohit.springboot_learning.model.Category;
@@ -19,5 +21,9 @@ public class CategoryService {
 
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).orElse(null);
+    }
+
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rohit.springboot_learning.model.Category;
 import com.rohit.springboot_learning.service.CategoryService;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +40,11 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(category);
+    }
+
+    @GetMapping
+    public List<Category> getCategories() {
+        return categoryService.getAllCategories();
     }
 
 }
