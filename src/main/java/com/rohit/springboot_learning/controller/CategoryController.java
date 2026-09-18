@@ -38,9 +38,10 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
         Category category = categoryService.getCategoryById(id);
-        if (category == null) {
-            return ResponseEntity.notFound().build();
-        }
+        // if (category == null) {
+        // return ResponseEntity.notFound().build();
+        // }
+        // GlobalExceptionHandler handles the error centrally.
         return ResponseEntity.ok(category);
     }
 
@@ -55,18 +56,17 @@ public class CategoryController {
             @RequestBody Category category) {
         Category updatedCategory = categoryService.updateCategory(id, category);
 
-        if (updatedCategory == null) {
-            return ResponseEntity.notFound().build();
-        }
+        // if (updatedCategory == null) {
+        // return ResponseEntity.notFound().build();
+        // }
+        // Because the service now throws the exception, we don't need this
         return ResponseEntity.ok(updatedCategory);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
-        boolean deleted = categoryService.deleteCategory(id);
-        if (!deleted) {
-            return ResponseEntity.notFound().build();
-        }
+        categoryService.deleteCategory(id);
+
         return ResponseEntity.ok("Category " + id + " deleted successfully");
 
     }

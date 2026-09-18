@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.rohit.springboot_learning.exception.CategoryNotFoundException;
 import com.rohit.springboot_learning.model.Category;
 import com.rohit.springboot_learning.repository.CategoryRepository;
 
@@ -20,7 +21,8 @@ public class CategoryService {
     }
 
     public Category getCategoryById(Long id) {
-        return categoryRepository.findById(id).orElse(null);
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
     }
 
     public List<Category> getAllCategories() {
@@ -34,7 +36,7 @@ public class CategoryService {
 
         // if not found return null
         if (existingCategory == null) {
-            return null;
+            throw new CategoryNotFoundException("Category not found");
         }
         // update fields
         existingCategory.setName(category.getName());
@@ -44,11 +46,12 @@ public class CategoryService {
         return categoryRepository.save(existingCategory);
     }
 
-    public boolean deleteCategory(Long id) {
+    public void deleteCategory(Long id) {
+
         if (!categoryRepository.existsById(id)) {
-            return false;
+            throw new CategoryNotFoundException("Category not found");
         }
+
         categoryRepository.deleteById(id);
-        return true;
     }
 }
