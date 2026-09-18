@@ -43,4 +43,12 @@ public class CategoryService {
         // save updated Category back to database
         return categoryRepository.save(existingCategory);
     }
+
+    public boolean deleteCategory(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            return false;
+        }
+        categoryRepository.deleteById(id);
+        return true;
+    }
 }
