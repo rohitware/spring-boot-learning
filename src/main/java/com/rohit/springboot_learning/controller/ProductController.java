@@ -37,9 +37,6 @@ public class ProductController {
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
 
         Product product = productService.getProductById(id);
-        if (product == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(product); // 200
     }
 
@@ -56,20 +53,12 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         Product updateProduct = productService.updateProduct(id, product);
-        if (updateProduct == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(updateProduct);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
-        boolean deleted = productService.deleteProduct(id);
-
-        if (!deleted) {
-            return ResponseEntity.notFound().build(); // 404
-        }
-
+        productService.deleteProduct(id);
         return ResponseEntity.ok("Product " + id + " deleted successfully"); // 200
     }
 }

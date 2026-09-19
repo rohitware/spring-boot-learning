@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.rohit.springboot_learning.exception.ProductNotFoundException;
 import com.rohit.springboot_learning.model.Product;
 import com.rohit.springboot_learning.repository.ProductRepository;
 
@@ -20,7 +21,9 @@ public class ProductService {
     }
 
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(
+                        "Product not found with id: " + id));
     }
 
     public List<Product> getAllProducts() {
@@ -29,12 +32,10 @@ public class ProductService {
 
     public Product updateProduct(Long id, Product product) {
         // find existing product from database
-        Product existingProduct = productRepository.findById(id).orElse(null);
+        Product existingProduct = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(
+                        "Product not found with id: " + id));
 
-        // if not found return null
-        if (existingProduct == null) {
-            return null;
-        }
         // update fields
         existingProduct.setName(product.getName());
         existingProduct.setPrice(product.getPrice());
@@ -46,7 +47,8 @@ public class ProductService {
     public boolean deleteProduct(Long id) {
 
         if (!productRepository.existsById(id)) {
-            return false;
+            throw new ProductNotFoundException(
+                    "Product not found with id: " + id);
         }
 
         productRepository.deleteById(id);
