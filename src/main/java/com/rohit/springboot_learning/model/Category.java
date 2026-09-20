@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Category {
@@ -14,6 +15,7 @@ public class Category {
     private Long id;
 
     @NotBlank(message = "Name cannot be blank")
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String name;
     @NotBlank(message = "Description cannot be blank")
     private String description;
