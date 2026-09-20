@@ -3,7 +3,8 @@ package com.rohit.springboot_learning.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rohit.springboot_learning.model.Category;
+import com.rohit.springboot_learning.dto.CategoryRequest;
+import com.rohit.springboot_learning.dto.CategoryResponse;
 import com.rohit.springboot_learning.service.CategoryService;
 
 import java.util.List;
@@ -29,39 +30,32 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Category> createCategory(
-            @Valid @RequestBody Category category) {
-        Category savedCategory = categoryService.createCategory(category);
+    public ResponseEntity<CategoryResponse> createCategory(
+            @Valid @RequestBody CategoryRequest categoryRequest) {
+        CategoryResponse savedCategory = categoryService.createCategory(categoryRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(savedCategory);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
-        Category category = categoryService.getCategoryById(id);
-        // if (category == null) {
-        // return ResponseEntity.notFound().build();
-        // }
-        // GlobalExceptionHandler handles the error centrally.
-        return ResponseEntity.ok(category);
+    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
+        CategoryResponse categoryResponse = categoryService.getCategoryById(id);
+
+        return ResponseEntity.ok(categoryResponse);
     }
 
     @GetMapping
-    public List<Category> getCategories() {
+    public List<CategoryResponse> getCategories() {
         return categoryService.getAllCategories();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(
+    public ResponseEntity<CategoryResponse> updateCategory(
             @PathVariable Long id,
-            @RequestBody Category category) {
-        Category updatedCategory = categoryService.updateCategory(id, category);
+            @Valid @RequestBody CategoryRequest categoryRequest) {
+        CategoryResponse updatedCategory = categoryService.updateCategory(id, categoryRequest);
 
-        // if (updatedCategory == null) {
-        // return ResponseEntity.notFound().build();
-        // }
-        // Because the service now throws the exception, we don't need this
         return ResponseEntity.ok(updatedCategory);
     }
 
