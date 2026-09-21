@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
-import com.rohit.springboot_learning.model.Product;
+
+import com.rohit.springboot_learning.dto.ProductRequest;
+import com.rohit.springboot_learning.dto.ProductResponse;
 import com.rohit.springboot_learning.service.ProductService;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,22 +30,22 @@ public class ProductController {
 
     // GET /products - get all products from database
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductResponse> getAllProducts() {
         return productService.getAllProducts();
     }
 
     // GET /products/{id} - get product by id from database
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
 
-        Product product = productService.getProductById(id);
-        return ResponseEntity.ok(product); // 200
+        ProductResponse productResponse = productService.getProductById(id);
+        return ResponseEntity.ok(productResponse); // 200
     }
 
     // POST /products - save product to database
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product saveProduct = productService.createProduct(product);
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest) {
+        ProductResponse saveProduct = productService.createProduct(productRequest);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(saveProduct);
@@ -51,9 +53,10 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        Product updateProduct = productService.updateProduct(id, product);
-        return ResponseEntity.ok(updateProduct);
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id,
+            @RequestBody ProductRequest productRequest) {
+        ProductResponse updatedProduct = productService.updateProduct(id, productRequest);
+        return ResponseEntity.ok(updatedProduct);
     }
 
     @DeleteMapping("/{id}")

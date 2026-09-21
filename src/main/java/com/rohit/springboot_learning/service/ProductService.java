@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.rohit.springboot_learning.dto.ProductRequest;
+import com.rohit.springboot_learning.dto.ProductResponse;
 import com.rohit.springboot_learning.exception.ProductNotFoundException;
 import com.rohit.springboot_learning.model.Product;
 import com.rohit.springboot_learning.repository.ProductRepository;
@@ -16,32 +18,53 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
+    public ProductResponse createProduct(ProductRequest productRequest) {
+        Product product = new Product();
+
+        product.setName(productRequest.getName());
+        product.setPrice(productRequest.getPrice());
+
+        Product saveProduct = productRepository.save(product);
+
+        return new ProductResponse(
+                saveProduct.getId(),
+                saveProduct.getName(),
+                saveProduct.getPrice());
     }
 
-    public Product getProductById(Long id) {
-        return productRepository.findById(id)
+    public ProductResponse getProductById(Long id) {
+        Product product = productRepository
+                .findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(
                         "Product not found with id: " + id));
+
+        return new ProductResponse(product.getId(), product.getName(), product.getPrice());
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductResponse> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+
+        return products.stream()
+                .map(product -> new ProductResponse(product.getId(), product.getName(), product.getPrice()))
+                .toList();
     }
 
-    public Product updateProduct(Long id, Product product) {
+    public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
         // find existing product from database
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(
                         "Product not found with id: " + id));
 
         // update fields
-        existingProduct.setName(product.getName());
-        existingProduct.setPrice(product.getPrice());
+        existingProduct.setName(productRequest.getName());
+        existingProduct.setPrice(productRequest.getPrice());
 
         // save updated product back to database
-        return productRepository.save(existingProduct);
+        Product updatedProduct = productRepository.save(existingProduct);
+        return new ProductResponse(
+                updatedProduct.getId(),
+                updatedProduct.getName(),
+                updatedProduct.getPrice());
     }
 
     public boolean deleteProduct(Long id) {
