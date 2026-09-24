@@ -3,6 +3,7 @@ package com.rohit.springboot_learning.dto;
 public class ProductRequest {
     private String name;
     private Double price;
+    private Long categoryId;
 
     public ProductRequest() {
 
@@ -22,5 +23,13 @@ public class ProductRequest {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }
